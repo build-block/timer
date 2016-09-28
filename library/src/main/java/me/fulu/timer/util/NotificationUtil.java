@@ -1,5 +1,6 @@
 package me.fulu.timer.util;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -40,8 +41,11 @@ public class NotificationUtil {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setContentTitle(appName)
                 .setSmallIcon(TaskPlanCalculater.notificationIcon)
                 .setContentText(message).setContentIntent(pendingIntent).setAutoCancel(true);
-        if (ringtone != null && !ringtone.isEmpty())
+        if (ringtone != null && !ringtone.isEmpty()) {
             mBuilder.setSound(Uri.parse(ringtone));
+        } else {
+            mBuilder.setDefaults(Notification.DEFAULT_ALL);
+        }
         // Sets an ID for the notification
         int mNotificationId = nid;
         // Gets an instance of the NotificationManager service
