@@ -1,0 +1,42 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.fulu.timer">
+
+    <permission
+        android:name="me.fulu.timer.permission.TASK_COME"
+        android:protectionLevel="normal" />
+    <uses-permission android:name="me.fulu.timer.permission.TASK_COME" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+        <receiver
+            android:name=".receiver.TaskReceiver"
+            android:permission="me.fulu.timer.permission.TASK_COME">
+            <intent-filter>
+                <action android:name="me.fulu.timer.TASK_COME_ACTION" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <service android:exported="false" android:label="@string/app_name" android:name=".service.SuperTimerService">
+            <intent-filter>
+                <action android:name="me.fulu.supertimer.keepalive" />
+            </intent-filter>
+        </service>
+        <service android:name=".service.ResetIntentService" />
+    </application>
+
+</manifest>
