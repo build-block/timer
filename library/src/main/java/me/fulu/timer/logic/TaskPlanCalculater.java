@@ -34,6 +34,9 @@ public class TaskPlanCalculater {
         if (dt.isInThePast(TimeZone.getDefault()) || task.startTime.getTime() > task.endTime.getTime()) {
             return;
         }
+
+        deleteTask(task);
+
         Intent intent = new Intent("me.fulu.timer.TASK_COME_ACTION");
         intent.putExtra("uuid", task.id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, task.id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
