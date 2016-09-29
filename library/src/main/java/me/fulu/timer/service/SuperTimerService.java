@@ -6,6 +6,8 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
@@ -59,21 +61,11 @@ public class SuperTimerService extends Service {
 
 	private Notification getNotification() {
 		Task task = Task.getNextTask();
-		/*
-		Intent intent = getPackageManager().
-				getLaunchIntentForPackage(getPackageName());
-
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		intent.setAction(Intent.ACTION_MAIN);
-		*/
 
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-		//intent.setComponent(new ComponentName("me.fulu.timer.demo",
-		//		"me.fulu.timer.demo.MainActivity"));
+
 		intent.setComponent(getPackageManager().getLaunchIntentForPackage(getPackageName()).getComponent());
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
@@ -96,14 +88,23 @@ public class SuperTimerService extends Service {
 	}
 
 	private String getDisplayTitle(Task task) {
+		String appName="";
+		try {
+			PackageInfo packageInfo = getPackageManager()
+					.getPackageInfo(getPackageName(), 0);
+			appName = packageInfo.applicationInfo.loadLabel(getPackageManager()).toString();
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		if (task == null)
-			return getString(R.string.app_name);
-		return getString(R.string.app_name) + "  下个任务";
+			return appName;
+		return appName + "  下个提醒";
 	}
 
 	private String getDisplayStr(Task task) {
 		if (task == null)
-			return "没有可执行的任务,新建一个吧";
+			return "暂无提醒";
 
 		DateTime dateTime = DateTimeUtil.fromDate(task.startTime);
 		String date = "";

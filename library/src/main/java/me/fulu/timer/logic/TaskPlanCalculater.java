@@ -15,6 +15,7 @@ import java.util.TimeZone;
 import hirondelle.date4j.DateTime;
 import hirondelle.date4j.DateTime.DayOverflow;
 import me.fulu.timer.model.Task;
+import me.fulu.timer.service.SuperTimerService;
 import me.fulu.timer.util.DateTimeUtil;
 
 public class TaskPlanCalculater {
@@ -38,6 +39,10 @@ public class TaskPlanCalculater {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, task.id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, task.startTime.getTime(), pendingIntent);
+
+        if (useService) {
+            SuperTimerService.refresh(context);
+        }
     }
 
     public static void deleteTask(Task task) {
@@ -46,6 +51,10 @@ public class TaskPlanCalculater {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, task.id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
+
+        if (useService) {
+            SuperTimerService.refresh(context);
+        }
     }
 
     public static void doneTask(Task task) {
