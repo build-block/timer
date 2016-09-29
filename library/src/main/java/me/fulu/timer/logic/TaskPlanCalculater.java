@@ -158,7 +158,7 @@ public class TaskPlanCalculater {
             if (nextTime != null)
                 task.startTime = nextTime;
 
-            if (task.startTime.getTime() > task.endTime.getTime()) {
+            if (task.startTime.getTime() > task.endTime.getTime() || task.startTime.getTime() < new Date().getTime()) {
                 task.enable = false;
             } else {
                 task.enable = true;
