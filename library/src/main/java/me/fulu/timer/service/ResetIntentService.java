@@ -24,7 +24,6 @@ public class ResetIntentService extends IntentService {
 			for (Task task : tasks) {
 				try {
 					TaskPlanCalculater.resetTask(task);
-					TaskPlanCalculater.updateTask(task);
 				} catch (Exception e) {
 
 				}

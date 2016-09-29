@@ -157,6 +157,13 @@ public class TaskPlanCalculater {
 
             if (nextTime != null)
                 task.startTime = nextTime;
+
+            if (task.startTime.getTime() > task.endTime.getTime()) {
+                task.enable = false;
+            } else {
+                task.enable = true;
+            }
+
             Log.e("TaskPlanCalculater", "resetTask " + task.startTime.toLocaleString());
             task.update();
         }

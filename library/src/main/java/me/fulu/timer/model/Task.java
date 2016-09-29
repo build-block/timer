@@ -50,6 +50,9 @@ public class Task extends BaseModel {
     
     @Override
     public void createOrUpdate() {
+        if (startTime.getTime() < new Date().getTime()) {
+            enable = false;
+        }
     	super.createOrUpdate();
     	TaskPlanCalculater.updateTask(this);
     }
